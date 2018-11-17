@@ -58,7 +58,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         // vsync prevents animations that are offscreen from consuming
         // unnecessary resources
         vsync: this,
-        duration: Duration(milliseconds: 2000),
+        duration: Duration(milliseconds: 200),
       ),
     );
 
@@ -111,11 +111,11 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: CurvedAnimation(
-        parent: animationController,
-        curve: Curves.bounceOut,
-      ),
+    return SlideTransition(
+      position: animationController.drive(Tween(
+        begin: Offset(0, 1),
+        end: Offset.zero,
+      )),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: Row(
