@@ -22,35 +22,49 @@ class ChatScreen extends StatefulWidget {
 class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = <ChatMessage>[];
+  bool _isComposing = false;
 
   Widget _buildTextComposer() {
     return IconTheme(
-        data: IconThemeData(color: Theme.of(context).accentColor),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            children: <Widget>[
-              Flexible(
-                child: TextField(
-                  controller: _textController,
-                  onSubmitted: _handleSubmitted,
-                  decoration:
-                      InputDecoration.collapsed(hintText: "Send a message"),
-                ),
+      data: IconThemeData(color: Theme.of(context).accentColor),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          children: <Widget>[
+            Flexible(
+              child: TextField(
+                controller: _textController,
+                onChanged: (String text) {
+                  setState(() {
+                    _isComposing = text.trim().isNotEmpty;
+                  });
+                },
+                onSubmitted: _isComposing ? _handleSubmitted : null,
+                decoration:
+                    InputDecoration.collapsed(hintText: "Send a message"),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 4.0),
-                child: IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: () => _handleSubmitted(_textController.text)),
-              )
-            ],
-          ),
-        ));
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 4.0),
+              child: IconButton(
+                  icon: Icon(Icons.send),
+                  // onPressed: null makes the button disabled
+                  onPressed: _isComposing
+                      ? () => _handleSubmitted(_textController.text)
+                      : null),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void _handleSubmitted(String text) {
     _textController.clear();
+
+    setState(() {
+      _isComposing = false;
+    });
 
     ChatMessage message = ChatMessage(
       text: text,
