@@ -7,41 +7,41 @@ void main() {
 class FriendlyChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
-    return new MaterialApp(
+    return MaterialApp(
       title: "Friendlychat",
-      home: new ChatScreen(),
+      home: ChatScreen(),
     );
   }
 }
 
 class ChatScreen extends StatefulWidget {
   @override
-  State createState() => new ChatScreenState();
+  State createState() => ChatScreenState();
 }
 
 class ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _textController = new TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = <ChatMessage>[];
 
   Widget _buildTextComposer() {
-    return new IconTheme(
-        data: new IconThemeData(color: Theme.of(context).accentColor),
-        child: new Container(
+    return IconTheme(
+        data: IconThemeData(color: Theme.of(context).accentColor),
+        child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: new Row(
+          child: Row(
             children: <Widget>[
-              new Flexible(
-                child: new TextField(
+              Flexible(
+                child: TextField(
                   controller: _textController,
                   onSubmitted: _handleSubmitted,
                   decoration:
-                      new InputDecoration.collapsed(hintText: "Send a message"),
+                      InputDecoration.collapsed(hintText: "Send a message"),
                 ),
               ),
-              new Container(
-                margin: new EdgeInsets.symmetric(horizontal: 4.0),
-                child: new IconButton(
-                    icon: new Icon(Icons.send),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 4.0),
+                child: IconButton(
+                    icon: Icon(Icons.send),
                     onPressed: () => _handleSubmitted(_textController.text)),
               )
             ],
@@ -51,7 +51,9 @@ class ChatScreenState extends State<ChatScreen> {
 
   void _handleSubmitted(String text) {
     _textController.clear();
-    ChatMessage message = new ChatMessage(text: text);
+
+    ChatMessage message = ChatMessage(text: text);
+
     setState(() {
       _messages.insert(0, message);
     });
@@ -59,21 +61,21 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(title: new Text("Friendlychat")),
-      body: new Column(children: <Widget>[
-        new Flexible(
-          child: new ListView.builder(
+    return Scaffold(
+      appBar: AppBar(title: Text("Friendlychat")),
+      body: Column(children: <Widget>[
+        Flexible(
+          child: ListView.builder(
             itemBuilder: (_, int index) => _messages[index],
-            padding: new EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             reverse: true,
             itemCount: _messages.length,
           ),
         ),
-        new Divider(height: 1.0),
-        new Container(
+        Divider(height: 1.0),
+        Container(
           child: _buildTextComposer(),
-          decoration: new BoxDecoration(color: Theme.of(context).cardColor),
+          decoration: BoxDecoration(color: Theme.of(context).cardColor),
         )
       ]),
     );
@@ -89,21 +91,21 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: new Row(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Container(
+          Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: new CircleAvatar(child: new Text(_name[0]))),
-          new Column(
+              child: CircleAvatar(child: Text(_name[0]))),
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              new Text(_name, style: Theme.of(context).textTheme.subhead),
-              new Container(
+              Text(_name, style: Theme.of(context).textTheme.subhead),
+              Container(
                 margin: const EdgeInsets.only(top: 5.0),
-                child: new Text(text),
+                child: Text(text),
               )
             ],
           )
